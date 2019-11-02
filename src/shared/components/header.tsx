@@ -6,9 +6,10 @@ import {
     Toolbar,
     Grid,
     IconButton,
+    Badge,
 } from '@material-ui/core';
 
-import { Home, NavigateNext } from '@material-ui/icons';
+import { Home, ShoppingCart } from '@material-ui/icons';
 
 import { Link } from 'react-router-dom';
 
@@ -44,11 +45,13 @@ export const Header: React.FC = () => {
                         </Grid>
                         <Grid item>
                             <IconButton
-                                to='/'
+                                to='/cart'
                                 component={Link}
                                 color='secondary'
                             >
-                                <NavigateNext/>
+                                <Badge color='error' badgeContent={2}>
+                                    <ShoppingCart/>
+                                </Badge>
                             </IconButton>
                         </Grid>
                     </Grid>
