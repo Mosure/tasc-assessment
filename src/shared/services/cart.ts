@@ -1,5 +1,5 @@
 import React from 'react';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject, merge } from 'rxjs';
 
 import { Cart, CartInfo, CartItem } from '../models';
 
@@ -24,6 +24,8 @@ export interface ICartService {
     getCartItemTax: (cartItem: CartItem) => number;
     getCartItemPrice: (cartItem: CartItem) => number;
     getCartItemTaxedPrice: (cartItem: CartItem) => number;
+
+    onUpdate: () => Observable<Cart>;
 }
 
 /**
@@ -37,8 +39,15 @@ export class CartService implements ICartService {
         items: [],
     };
 
+    private _onUpdateSubject = new Subject<Cart>();
+    private readonly _STORAGE_CART = 'tasc.cart.v1';
+
+    constructor() {
+        this.loadCart();
+    }
+
     public loadCart = () => {
-        const cartData = localStorage.getItem('cart');
+        const cartData = localStorage.getItem(this._STORAGE_CART);
 
         if (cartData) {
             const parsed = JSON.parse(cartData);
@@ -50,7 +59,8 @@ export class CartService implements ICartService {
     }
 
     public saveCart = () => {
-        localStorage.setItem('cart', JSON.stringify(this.getCart()));
+        localStorage.setItem(this._STORAGE_CART, JSON.stringify(this.getLocalCart()));
+        this.sendUpdate();
     }
 
     public getLocalCart = (): Cart => {
@@ -88,19 +98,51 @@ export class CartService implements ICartService {
     }
 
     public addToCart = (cartItem: CartItem) => {
+        const cart = this.getLocalCart();
+
+        let found = false;
+        for (const existingItem of cart.items) {
+            if (existingItem.item.id === cartItem.item.id) {
+                existingItem.qty += cartItem.qty;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            cart.items.push(cartItem);
+        }
 
         this.saveCart();
     }
 
     public editItem = (cartItem: CartItem) => {
+        const cart = this.getLocalCart();
+
+        for (const existingItem of cart.items) {
+            if (existingItem.item.id === cartItem.item.id) {
+                existingItem.qty = cartItem.qty;
+                break;
+            }
+        }
 
         this.saveCart();
     }
 
     public removeItem = (cartItem: CartItem): CartItem | undefined => {
+        const cart = this.getLocalCart();
+
+        const indexToRemove = cart.items.findIndex((item) => item.item.id === cartItem.item.id);
+
+        let removed;
+        if (indexToRemove !== -1) {
+            removed = cart.items[indexToRemove];
+            cart.items.splice(indexToRemove, 1);
+        }
+
         this.saveCart();
 
-        return undefined;
+        return removed;
     }
 
     public getCartItemTax = (cartItem: CartItem): number => {
@@ -124,6 +166,14 @@ export class CartService implements ICartService {
 
     public getCartItemTaxedPrice = (cartItem: CartItem): number => {
         return this.getCartItemPrice(cartItem) + this.getCartItemTax(cartItem);
+    }
+
+    public onUpdate = (): Observable<Cart> => {
+        return merge(of(this.getLocalCart()), this._onUpdateSubject.asObservable());
+    }
+
+    protected sendUpdate = () => {
+        this._onUpdateSubject.next(this.getLocalCart());
     }
 }
 

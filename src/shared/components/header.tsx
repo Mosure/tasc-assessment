@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     createStyles,
     makeStyles,
@@ -8,10 +8,10 @@ import {
     IconButton,
     Badge,
 } from '@material-ui/core';
-
 import { Home, ShoppingCart } from '@material-ui/icons';
-
 import { Link } from 'react-router-dom';
+
+import { CartServiceContext } from '../services';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -23,6 +23,25 @@ const useStyles = makeStyles((theme) =>
 
 export const Header: React.FC = () => {
     const classes = useStyles();
+    const cartService = useContext(CartServiceContext);
+    const [totalItems, setTotalItems] = useState({
+        count: 0,
+    });
+
+    useEffect(() => {
+        cartService.onUpdate()
+        .subscribe((cart) => {
+            let count = 0;
+
+            for (const item of cart.items) {
+                count += item.qty;
+            }
+
+            setTotalItems({
+                count,
+            });
+        });
+    }, []);
 
     return (
         <>
@@ -49,7 +68,7 @@ export const Header: React.FC = () => {
                                 component={Link}
                                 color='secondary'
                             >
-                                <Badge color='error' badgeContent={2}>
+                                <Badge color='error' badgeContent={totalItems.count}>
                                     <ShoppingCart/>
                                 </Badge>
                             </IconButton>

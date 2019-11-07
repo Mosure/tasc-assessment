@@ -6,6 +6,7 @@ Note: this is not an ideal solution, the following are some considerations of a 
 * Project structure refactoring (different react state management)
 * CI/CD
 * More documentation
+* Pagination would need to be fully implemented
 
 ## Architecture
 The shopping cart is seperated into the following components:

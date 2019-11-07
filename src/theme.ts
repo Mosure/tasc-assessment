@@ -14,8 +14,8 @@ const paletteTheme = createMuiTheme({
         type: 'light',
         text: {
             primary: 'rgba(0, 0, 0, 0.87)',
-            secondary: '#FFF',
-            hint: 'rgba(255, 255, 255, 0.60)',
+            secondary: 'rgba(0, 0, 0, 0.87)',
+            hint: 'rgba(0, 0, 0, 0.60)',
             disabled: 'rgba(0, 0, 0, 0.40)',
         },
     },
@@ -41,6 +41,7 @@ export const theme = responsiveFontSizes(createMuiTheme({
         },
         h2: {
             fontWeight: 500,
+            fontSize: '1.5rem',
         },
         h3: {
             fontWeight: 500,
@@ -54,12 +55,13 @@ export const theme = responsiveFontSizes(createMuiTheme({
         },
         h6: {
             fontWeight: 500,
+            color: paletteTheme.palette.text.hint,
         },
         body1: {
-            color: paletteTheme.palette.text.hint,
+            color: paletteTheme.palette.text.primary,
         },
         body2: {
-            color: paletteTheme.palette.text.hint,
+            color: paletteTheme.palette.text.secondary,
         },
     },
 }));

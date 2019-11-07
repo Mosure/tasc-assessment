@@ -1,12 +1,13 @@
 import React from 'react';
-import { Item } from '../models';
-import { PagedResult } from '../models/paged-result';
+import { Observable, of } from 'rxjs';
+
+import { Item, PagedResult } from '../models';
 
 /**
  * Offers the 'catalog' of items available for purchase
  */
 export interface IItemsService {
-    getItems: (offset?: number, limit?: number) => PagedResult<Item>;
+    getItems: (offset?: number, limit?: number) => Observable<PagedResult<Item>>;
 }
 
 /**
@@ -86,7 +87,7 @@ export class LocalItemsService implements IItemsService {
             total: this._items.length,
         };
 
-        return result;
+        return of(result);
     }
 }
 
