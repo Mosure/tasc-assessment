@@ -1,4 +1,6 @@
 
-export const getItems = () => {
+export class ItemsService {
+    public getItems = () => {
 
-};
+    }
+}

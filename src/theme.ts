@@ -15,7 +15,7 @@ const paletteTheme = createMuiTheme({
         text: {
             primary: 'rgba(0, 0, 0, 0.87)',
             secondary: '#FFF',
-            hint: 'rgba(0, 0, 0, 0.60)',
+            hint: 'rgba(255, 255, 255, 0.60)',
             disabled: 'rgba(0, 0, 0, 0.40)',
         },
     },

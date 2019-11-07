@@ -1,83 +1,85 @@
 import { Cart, CartInfo, CartItem } from '../models';
 
-const SALES_TAX = 0.1;
-const IMPORT_TAX = 0.05;
+export class CartService {
+    private readonly SALES_TAX = 0.1;
+    private readonly IMPORT_TAX = 0.05;
 
-let _cart: Cart = {
-    items: [],
-};
-
-export const loadCart = () => {
-    const cartData = localStorage.getItem('cart');
-
-    if (cartData) {
-        const parsed = JSON.parse(cartData);
-
-        if (parsed.items) {
-            _cart = parsed;
-        }
-    }
-};
-
-export const saveCart = () => {
-    localStorage.setItem('cart', JSON.stringify(getCart()));
-};
-
-export const getCart = (): Cart => {
-    return _cart;
-};
-
-export const getCartInfo = (): CartInfo => {
-    const info: CartInfo = {
-        salesTaxes: 0,
-        total: 0,
+    private _cart: Cart = {
+        items: [],
     };
 
-    const cart = getCart();
+    public loadCart = () => {
+        const cartData = localStorage.getItem('cart');
 
-    for (const cartItem of cart.items) {
-        info.salesTaxes += getCartItemTax(cartItem);
-        info.total += getCartItemPrice(cartItem);
+        if (cartData) {
+            const parsed = JSON.parse(cartData);
+
+            if (parsed.items) {
+                this._cart = parsed;
+            }
+        }
     }
 
-    return info;
-};
-
-export const addToCart = (cartItem: CartItem) => {
-
-    saveCart();
-};
-
-export const editItem = (cartItem: CartItem) => {
-
-    saveCart();
-};
-
-export const removeItem = (cartItem: CartItem): CartItem | undefined => {
-    saveCart();
-
-    return undefined;
-};
-
-export const getCartItemTax = (cartItem: CartItem): number => {
-    const cost = getCartItemCost(cartItem);
-    let tax = 0;
-
-    if (cartItem.item.taxable) {
-        tax += cost * SALES_TAX;
+    public saveCart = () => {
+        localStorage.setItem('cart', JSON.stringify(this.getCart()));
     }
 
-    if (cartItem.item.imported) {
-        tax += cost * IMPORT_TAX;
+    public getCart = (): Cart => {
+        return this._cart;
     }
 
-    return tax;
-};
+    public getCartInfo = (): CartInfo => {
+        const info: CartInfo = {
+            salesTaxes: 0,
+            total: 0,
+        };
 
-export const getCartItemCost = (cartItem: CartItem): number => {
-    return cartItem.qty * cartItem.item.cost;
-};
+        const cart = this.getCart();
 
-export const getCartItemPrice = (cartItem: CartItem): number => {
-    return getCartItemCost(cartItem) + getCartItemTax(cartItem);
-};
+        for (const cartItem of cart.items) {
+            info.salesTaxes += this.getCartItemTax(cartItem);
+            info.total += this.getCartItemPrice(cartItem);
+        }
+
+        return info;
+    }
+
+    public addToCart = (cartItem: CartItem) => {
+
+        this.saveCart();
+    }
+
+    public editItem = (cartItem: CartItem) => {
+
+        this.saveCart();
+    }
+
+    public removeItem = (cartItem: CartItem): CartItem | undefined => {
+        this.saveCart();
+
+        return undefined;
+    }
+
+    public getCartItemTax = (cartItem: CartItem): number => {
+        const cost = this.getCartItemCost(cartItem);
+        let tax = 0;
+
+        if (cartItem.item.taxable) {
+            tax += cost * this.SALES_TAX;
+        }
+
+        if (cartItem.item.imported) {
+            tax += cost * this.IMPORT_TAX;
+        }
+
+        return tax;
+    }
+
+    public getCartItemCost = (cartItem: CartItem): number => {
+        return cartItem.qty * cartItem.item.cost;
+    }
+
+    public getCartItemPrice = (cartItem: CartItem): number => {
+        return this.getCartItemCost(cartItem) + this.getCartItemTax(cartItem);
+    }
+}
