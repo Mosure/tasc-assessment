@@ -1,10 +1,39 @@
+import React from 'react';
+import { Observable, of } from 'rxjs';
+
 import { Cart, CartInfo, CartItem } from '../models';
 
-export class CartService {
-    private readonly SALES_TAX = 0.1;
-    private readonly IMPORT_TAX = 0.05;
+/**
+ * Manages cart state and invoice calculations
+ *
+ * TODO: Add load cart from remote option
+ */
+export interface ICartService {
+    loadCart: () => void;
+    saveCart: () => void;
+    purchaseCart: () => Observable<string>;
 
-    private _cart: Cart = {
+    getCart: (id?: string) => Observable<Cart>;
+    getLocalCart: (cart: Cart) => Cart;
+    getCartInfo: (cart: Cart) => CartInfo;
+
+    addToCart: (cartItem: CartItem) => void;
+    editItem: (cartItem: CartItem) => void;
+    removeItem: (cartItem: CartItem) => CartItem | undefined;
+
+    getCartItemTax: (cartItem: CartItem) => number;
+    getCartItemPrice: (cartItem: CartItem) => number;
+    getCartItemTaxedPrice: (cartItem: CartItem) => number;
+}
+
+/**
+ * Implementation of the ICartService
+ */
+export class CartService implements ICartService {
+    protected SALES_TAX = 0.1;
+    protected IMPORT_TAX = 0.05;
+
+    protected _cart: Cart = {
         items: [],
     };
 
@@ -24,17 +53,31 @@ export class CartService {
         localStorage.setItem('cart', JSON.stringify(this.getCart()));
     }
 
-    public getCart = (): Cart => {
+    public getLocalCart = (): Cart => {
         return this._cart;
     }
 
-    public getCartInfo = (): CartInfo => {
+    public purchaseCart = (): Observable<string> => {
+        // Submit the cart to the server (returning the created cart id)
+        // Clear the local cart
+
+        return of('');
+    }
+
+    public getCart = (id?: string): Observable<Cart> => {
+        // This denotes a remote call instead of the local cart
+        if (id) {
+            // Get cart from remote
+        }
+
+        return of(this._cart);
+    }
+
+    public getCartInfo = (cart: Cart): CartInfo => {
         const info: CartInfo = {
             salesTaxes: 0,
             total: 0,
         };
-
-        const cart = this.getCart();
 
         for (const cartItem of cart.items) {
             info.salesTaxes += this.getCartItemTax(cartItem);
@@ -61,7 +104,7 @@ export class CartService {
     }
 
     public getCartItemTax = (cartItem: CartItem): number => {
-        const cost = this.getCartItemCost(cartItem);
+        const cost = this.getCartItemPrice(cartItem);
         let tax = 0;
 
         if (cartItem.item.taxable) {
@@ -75,11 +118,13 @@ export class CartService {
         return tax;
     }
 
-    public getCartItemCost = (cartItem: CartItem): number => {
-        return cartItem.qty * cartItem.item.cost;
+    public getCartItemPrice = (cartItem: CartItem): number => {
+        return cartItem.qty * cartItem.item.price;
     }
 
-    public getCartItemPrice = (cartItem: CartItem): number => {
-        return this.getCartItemCost(cartItem) + this.getCartItemTax(cartItem);
+    public getCartItemTaxedPrice = (cartItem: CartItem): number => {
+        return this.getCartItemPrice(cartItem) + this.getCartItemTax(cartItem);
     }
 }
+
+export const CartServiceContext = React.createContext(new CartService());
