@@ -48,7 +48,7 @@ export const Invoice: React.FC<Props> = (props: Props) => {
 
                     {
                         !props.noActions &&
-                        <TableCell className={classes.tableHeader} align='right'>Actions</TableCell>
+                        <TableCell className={classes.tableHeader} align='right'>Remove</TableCell>
                     }
                 </TableRow>
             </TableHead>
