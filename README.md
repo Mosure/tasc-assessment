@@ -24,6 +24,11 @@ Hosted on AWS CloudFront.
 ### Backend (AWS Lambda)
 Used to retrieve the catalog of items (with pagination) and 'purchase' carts.
 
+List of endpoints:
+* GET /items
+* GET /invoices/:id
+* POST /invoices
+
 ### Database (AWS RDS)
 Stores the catalog of items and purchased carts.
 
