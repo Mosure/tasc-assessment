@@ -34,6 +34,12 @@ The schema of the database is defined below:
 ### CI/CD (AWS CodeBuild/CodePipeline)
 CodePipeline setup on AWS to automatically deploy to AWS CloudFront CDN.
 
+### CDN (AWS CloudFront)
+Distributes frontend
+
+### DNS (AWS Route53)
+Manages DNS lookup to CDN.
+
 ## Reflection
 Note: this is not an ideal solution, the following are some considerations of a production system:
 * Better testing coverage
