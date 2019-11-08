@@ -74,7 +74,7 @@ export class CartService implements ICartService {
         const cart = this.getLocalCart();
 
 
-
+        
         cart.items = [];
 
         this.saveCart();
