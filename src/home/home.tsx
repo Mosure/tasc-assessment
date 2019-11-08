@@ -37,8 +37,12 @@ export const Home: React.FC = () => {
     const [pageResult, setPageResult] = useState(blankPage);
 
     useEffect(() => {
-        itemsService.getItems()
+        const subscription = itemsService.getItems()
             .subscribe((result) => setPageResult(result));
+
+        return () => {
+            subscription.unsubscribe();
+        };
     }, [itemsService]);
 
     return (

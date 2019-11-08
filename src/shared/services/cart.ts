@@ -71,7 +71,15 @@ export class CartService implements ICartService {
         // Submit the cart to the server (returning the created cart id)
         // Clear the local cart
 
-        return of('');
+        const cart = this.getLocalCart();
+
+
+
+        cart.items = [];
+
+        this.saveCart();
+
+        return of('cartId');
     }
 
     public getCart = (id?: string): Observable<Cart> => {

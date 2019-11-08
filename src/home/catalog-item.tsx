@@ -56,7 +56,7 @@ export const CatalogItem: React.FC<Item> = (item: Item) => {
     };
 
     useEffect(() => {
-        cartService.onUpdate()
+        const subscription = cartService.onUpdate()
         .subscribe((cart) => {
             for (const cartItem of cart.items) {
                 if (cartItem.item.id === item.id) {
@@ -68,7 +68,11 @@ export const CatalogItem: React.FC<Item> = (item: Item) => {
                 }
             }
         });
-    }, []);
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [cartService, item.id]);
 
     return (
         <Card className={classes.card}>

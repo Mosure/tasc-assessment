@@ -12,12 +12,12 @@ export const App: React.FC = () => {
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             <BrowserRouter>
-                    <Switch>
-                        <Route exact path='/' component={Home}/>
-                        <Route exact path='/cart' component={Cart}/>
+                <Switch>
+                    <Route exact path='/' component={Home}/>
+                    <Route path='/cart/:id' component={Cart}/>
 
-                        <Redirect to='/'/>
-                    </Switch>
+                    <Redirect to='/'/>
+                </Switch>
             </BrowserRouter>
         </ThemeProvider>
     );

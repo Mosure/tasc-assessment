@@ -29,7 +29,7 @@ export const Header: React.FC = () => {
     });
 
     useEffect(() => {
-        cartService.onUpdate()
+        const subscription = cartService.onUpdate()
         .subscribe((cart) => {
             let count = 0;
 
@@ -41,7 +41,11 @@ export const Header: React.FC = () => {
                 count,
             });
         });
-    }, []);
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [cartService]);
 
     return (
         <>
