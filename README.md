@@ -19,6 +19,8 @@ We use React to display the catalog of items, manage local cart state, rendering
 
 Includes jest tests to verify correct invoice calculation.
 
+Hosted on AWS CloudFront.
+
 ### Backend (AWS Lambda)
 Used to retrieve the catalog of items (with pagination) and 'purchase' carts.
 
@@ -29,10 +31,12 @@ Purchased carts are saved so the invoice can be viewed after the client state of
 
 The schema of the database is defined below:
 
+### CI/CD (AWS CodeBuild/CodePipeline)
+CodePipeline setup on AWS to automatically deploy to AWS CloudFront CDN.
+
 ## Reflection
 Note: this is not an ideal solution, the following are some considerations of a production system:
 * Better testing coverage
 * Project structure refactoring (different react state management)
-* CI/CD
 * More documentation
 * Pagination would need to be fully implemented
