@@ -99,7 +99,7 @@ export class CartService implements ICartService {
 
         for (const cartItem of cart.items) {
             info.salesTaxes += this.getCartItemTax(cartItem);
-            info.total += this.getCartItemPrice(cartItem);
+            info.total += this.getCartItemTaxedPrice(cartItem);
         }
 
         return info;
@@ -158,11 +158,11 @@ export class CartService implements ICartService {
         let tax = 0;
 
         if (cartItem.item.taxable) {
-            tax += cost * this.SALES_TAX;
+            tax += Math.ceil(cost * this.SALES_TAX * 20) / 20;
         }
 
         if (cartItem.item.imported) {
-            tax += cost * this.IMPORT_TAX;
+            tax += Math.ceil(cost * this.IMPORT_TAX * 20) / 20;
         }
 
         return tax;

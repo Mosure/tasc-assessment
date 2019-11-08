@@ -3,21 +3,33 @@ import {
     TableRow,
     TableCell,
     IconButton,
+    makeStyles,
+    createStyles,
+    Tooltip,
 } from '@material-ui/core';
 import CurrencyFormat from 'react-currency-format';
+import { Remove, LocalShippingOutlined } from '@material-ui/icons';
 
 import {
     CartServiceContext,
     CartItem,
 } from '../shared';
-import { Remove } from '@material-ui/icons';
 
 export interface Props {
     item: CartItem;
     noActions?: boolean;
 }
 
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        importedCell: {
+            width: '2em',
+        },
+    }),
+);
+
 export const CartItemRow: React.FC<Props> = (props: Props) => {
+    const classes = useStyles();
     const cartService = useContext(CartServiceContext);
 
     const removeItem = () => {
@@ -26,6 +38,14 @@ export const CartItemRow: React.FC<Props> = (props: Props) => {
 
     return (
         <TableRow>
+            <TableCell align='center' className={classes.importedCell}>
+                {
+                    props.item.item.imported &&
+                    <Tooltip title='Imported'>
+                        <LocalShippingOutlined/>
+                    </Tooltip>
+                }
+            </TableCell>
             <TableCell>{props.item.item.name}</TableCell>
             <TableCell align='right'>{props.item.qty}</TableCell>
             <TableCell align='right'>
@@ -38,13 +58,15 @@ export const CartItemRow: React.FC<Props> = (props: Props) => {
                     fixedDecimalScale
                 />
             </TableCell>
-            
+
             {
                 !props.noActions &&
                 <TableCell align='right'>
-                    <IconButton onClick={removeItem}>
-                        <Remove/>
-                    </IconButton>
+                    <Tooltip title='Remove'>
+                        <IconButton onClick={removeItem}>
+                            <Remove/>
+                        </IconButton>
+                    </Tooltip>
                 </TableCell>
             }
         </TableRow>

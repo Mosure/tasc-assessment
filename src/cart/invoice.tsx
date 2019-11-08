@@ -41,6 +41,7 @@ export const Invoice: React.FC<Props> = (props: Props) => {
         <Table className={classes.table}>
             <TableHead>
                 <TableRow>
+                    <TableCell className={classes.tableHeader}>Imported</TableCell>
                     <TableCell className={classes.tableHeader}>Item Name</TableCell>
                     <TableCell className={classes.tableHeader} align='right'>Qty</TableCell>
                     <TableCell className={classes.tableHeader} align='right'>Price</TableCell>
@@ -58,7 +59,7 @@ export const Invoice: React.FC<Props> = (props: Props) => {
                     ))
                 }
                 <TableRow>
-                    <TableCell rowSpan={2}/>
+                    <TableCell rowSpan={2} colSpan={2}/>
                     <TableCell className={classes.tableHeader}>Taxes</TableCell>
                     <TableCell align='right'>
                         <CurrencyFormat
