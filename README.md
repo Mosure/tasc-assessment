@@ -1,12 +1,7 @@
 # tasc-assessment
 TASC Interview Assessment
 
-Note: this is not an ideal solution, the following are some considerations of a production system:
-* Better testing coverage
-* Project structure refactoring (different react state management)
-* CI/CD
-* More documentation
-* Pagination would need to be fully implemented
+[View the live site!](https://tasc.mitchell.mosure.me)
 
 ## Architecture
 The shopping cart is seperated into the following components:
@@ -25,3 +20,11 @@ Stores the catalog of items and purchased carts.
 Purchased carts are saved so the invoice can be viewed after the client state of the application has been abandoned.
 
 The schema of the database is defined below:
+
+## Reflection
+Note: this is not an ideal solution, the following are some considerations of a production system:
+* Better testing coverage
+* Project structure refactoring (different react state management)
+* CI/CD
+* More documentation
+* Pagination would need to be fully implemented
