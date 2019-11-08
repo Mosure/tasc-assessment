@@ -3,6 +3,14 @@ TASC Interview Assessment
 
 [View the live site!](https://tasc.mitchell.mosure.me)
 
+## Tests
+View the following test carts:
+* [Test 1](https://tasc.mitchell.mosure.me/invoice/test1)
+* [Test 2](https://tasc.mitchell.mosure.me/invoice/test2)
+* [Test 3](https://tasc.mitchell.mosure.me/invoice/test3)
+
+Note: The results are consistent with the assessment brief.
+
 ## Architecture
 The shopping cart is seperated into the following components:
 
