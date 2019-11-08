@@ -88,7 +88,7 @@ export const Invoice: React.FC<Props> = (props: Props) => {
                             fixedDecimalScale
                         />
                     </TableCell>
-                    
+
                     {
                         !props.noActions &&
                         <TableCell/>

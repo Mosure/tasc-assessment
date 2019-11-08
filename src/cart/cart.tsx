@@ -6,10 +6,8 @@ import {
     Container,
     Paper,
     Button,
-    Typography,
 } from '@material-ui/core';
-import { Switch, Route, useParams } from 'react-router-dom';
-import { Subscription } from 'rxjs';
+import { useHistory } from 'react-router-dom';
 
 import {
     Header,
@@ -41,7 +39,7 @@ const useStyles = makeStyles((theme) =>
 export const Cart: React.FC = () => {
     const classes = useStyles();
     const cartService = useContext(CartServiceContext);
-    const { id } = useParams();
+    const history = useHistory();
 
     const emptyCart: CartModel = { items: [] };
 
@@ -51,76 +49,54 @@ export const Cart: React.FC = () => {
     });
 
     useEffect(() => {
-        let subscription: Subscription;
-
-        if (!id) {
-            subscription = cartService.onUpdate()
-            .subscribe((cart) => {
-                setCartState({
-                    cart,
-                    cartInfo: cartService.getCartInfo(cart),
-                });
+        const subscription = cartService.onUpdate()
+        .subscribe((cart) => {
+            setCartState({
+                cart,
+                cartInfo: cartService.getCartInfo(cart),
             });
-        } else {
-            subscription = cartService.getCart(id)
-            .subscribe((cart) => {
-                if (cart) {
-                    setCartState({
-                        cart,
-                        cartInfo: cartService.getCartInfo(cart),
-                    });
-                }
-            });
-        }
+        });
 
         return () => {
             subscription.unsubscribe();
         };
-    }, [id, cartService]);
+    }, [cartService]);
 
     const purchaseCart = () => {
         cartService.purchaseCart()
         .subscribe((cartId: string) => {
-
+            history.push('/invoice/' + cartId);
         });
     };
 
     return (
-        <Switch>
-            <Route exact path='/cart/:id'>
-                <Typography variant='h5'>
-                    Cart Invoice - {id}
-                </Typography>
+        <>
+            <Header/>
 
-                <Invoice cart={cartState.cart} noActions/>
-            </Route>
-            <Route>
-                <Header/>
+            <Container maxWidth='md' className={classes.container}>
+                <Grid
+                    container
+                    justify='center'
 
-                <Container maxWidth='md' className={classes.container}>
-                    <Grid
-                        container
-                        justify='center'
+                >
+                    <Paper className={classes.root}>
+                        <Invoice cart={cartState.cart}/>
 
-                    >
-                        <Paper className={classes.root}>
-                            <Invoice cart={cartState.cart}/>
+                        <Grid container justify='flex-end' className={classes.buttonContainer}>
+                            <Button
+                                color='secondary'
+                                variant='contained'
+                                disabled={cartState.cart.items.length === 0}
+                                onClick={purchaseCart}
+                            >
+                                Purchase
+                            </Button>
+                        </Grid>
+                    </Paper>
+                </Grid>
+            </Container>
 
-                            <Grid container justify='flex-end' className={classes.buttonContainer}>
-                                <Button
-                                    color='secondary'
-                                    variant='contained'
-                                    disabled={cartState.cart.items.length === 0}
-                                >
-                                        Purchase
-                                </Button>
-                            </Grid>
-                        </Paper>
-                    </Grid>
-                </Container>
-
-                <Footer/>
-            </Route>
-        </Switch>
+            <Footer/>
+        </>
     );
 };
