@@ -3,6 +3,8 @@ TASC Interview Assessment
 
 [View the live site!](https://tasc.mitchell.mosure.me)
 
+![Screenshot](https://raw.githubusercontent.com/Mosure/tasc-assessment/master/documentation/screenshot.png)
+
 ## Tests
 View the following test carts:
 * [Test 1](https://tasc.mitchell.mosure.me/invoice/test1)
@@ -36,6 +38,8 @@ Purchased carts are saved so the invoice can be viewed after the client state of
 
 The schema of the database is defined below:
 
+![Database Schema](https://raw.githubusercontent.com/Mosure/tasc-assessment/master/documentation/db_schema.png)
+
 ### CI/CD (AWS CodeBuild/CodePipeline)
 CodePipeline setup on AWS to automatically deploy to AWS CloudFront CDN.
 
@@ -54,3 +58,4 @@ Note: this is not an ideal solution, the following are some considerations of a 
 * CI/CD needs to be implemented for backend Lambda functions
 * Invoices should be static or 'time of purchase' (cart items currently link to the catalog directly)
 * Loading/Progress bars need to be added
+* Mobile cart/invoice styling

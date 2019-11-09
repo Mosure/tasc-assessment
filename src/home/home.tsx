@@ -19,7 +19,7 @@ import { CatalogItem } from './catalog-item';
 const useStyles = makeStyles((theme) =>
     createStyles({
         container: {
-            height: '100vh',
+            minHeight: '100vh',
             paddingTop: '36px',
         },
         itemContainer: {
