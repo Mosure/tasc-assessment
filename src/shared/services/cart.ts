@@ -75,6 +75,8 @@ export class CartService implements ICartService {
     public purchaseCart = (): Observable<string> => {
         const cart = this.getLocalCart();
 
+        cart.alias = uuidv1();
+
         const options: RequestPromiseOptions = {
             baseUrl: config.api.base,
             json: true,

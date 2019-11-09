@@ -45,6 +45,6 @@ def lambda_handler(event, context):
                 'Access-Control-Allow-Origin': '*',
             },
             'body': json.dumps({
-                'id': cart_id,
+                'id': cart['alias'],
             })
         }
