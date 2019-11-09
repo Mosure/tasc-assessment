@@ -19,42 +19,32 @@ except pymysql.MySQLError as e:
     logger.error(e)
     sys.exit()
 
-query = """
-SELECT
-    i.`id`,
-    i.`name`,
-    i.`price`,
-    i.`taxable`,
-    i.`imported`
-FROM
-    `items` i
+query_cart = """
+    INSERT INTO `carts` (alias)
+    VALUES (%s);
+"""
+
+query_cart_items = """
+    INSERT INTO `cart_items` (cart_id, item_id, qty) VALUES (%s, %s, %s);
 """
 
 def lambda_handler(event, context):
     with conn.cursor() as cur:
-        cur.execute(query)
-        
-        result = cur.fetchall()
-        
-        items = []
-        for row in result:
-            items.append({
-                'id': row[0],
-                'name': row[1],
-                'price': row[2],
-                'taxable': row[3] == 1,
-                'imported': row[4] == 1,
-            })
+        cart = json.loads(event['body'])
+
+        cur.execute(query_cart, cart['alias'])
+
+        cart_id = cur.lastrowid
+
+        cur.executemany(query_cart_items, [(cart_id, item['item']['id'], item['qty']) for item in cart['items']])
 
         return {
-            'statusCode': 200,
+            'statusCode': 201,
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
             },
             'body': json.dumps({
-                'data': items,
-                'offset': 0,
-                'total': len(items),
+                'id': cart_id,
             })
         }
