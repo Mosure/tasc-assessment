@@ -21,37 +21,29 @@ except pymysql.MySQLError as e:
 
 query = """
 SELECT
-    ci.`qty`,
     i.`id`,
     i.`name`,
     i.`price`,
     i.`taxable`,
     i.`imported`
 FROM
-    `carts` c
-    INNER JOIN `cart_items` ci ON c.`id` = ci.`cart_id`
-    INNER JOIN `items` i ON i.`id` = ci.`item_id`
-WHERE
-    c.`alias` = %s
+    `items` i
 """
 
 def lambda_handler(event, context):
     with conn.cursor() as cur:
-        cur.execute(query, (event['pathParameters']['id']))
+        cur.execute(query)
         
         result = cur.fetchall()
         
         items = []
         for row in result:
             items.append({
-                'qty': row[0],
-                'item': {
-                    'id': row[1],
-                    'name': row[2],
-                    'price': row[3],
-                    'taxable': row[4] == 1,
-                    'imported': row[5] == 1,
-                }
+                'id': row[1],
+                'name': row[2],
+                'price': row[3],
+                'taxable': row[4] == 1,
+                'imported': row[5] == 1,
             })
 
         return {
@@ -61,7 +53,8 @@ def lambda_handler(event, context):
                 'Access-Control-Allow-Origin': '*',
             },
             'body': json.dumps({
-                'alias': event['pathParameters']['id'],
-                'items': items,
+                'data': items,
+                'offset': 0,
+                'total': len(items),
             })
         }

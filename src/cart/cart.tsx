@@ -77,7 +77,6 @@ export const Cart: React.FC = () => {
                 <Grid
                     container
                     justify='center'
-
                 >
                     <Paper className={classes.root}>
                         <Invoice cart={cartState.cart}/>
