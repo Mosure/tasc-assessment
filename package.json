@@ -11,13 +11,18 @@
     "@types/react-dom": "16.9.3",
     "@types/react-paginate": "^6.2.1",
     "@types/react-router-dom": "^5.1.2",
+    "@types/request": "^2.48.3",
+    "@types/request-promise": "^4.1.44",
     "react": "^16.11.0",
     "react-currency-format": "^1.0.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5",
     "rxjs": "^6.5.3",
-    "typescript": "3.6.4"
+    "typescript": "3.6.4",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "eslint": "^6.2.2",

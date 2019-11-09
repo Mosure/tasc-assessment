@@ -21,7 +21,7 @@ Includes jest tests to verify correct invoice calculation.
 
 Hosted on AWS CloudFront.
 
-### Backend (AWS Lambda)
+### Backend (AWS Lambda and API Gateway)
 Used to retrieve the catalog of items (with pagination) and 'purchase' carts.
 
 List of endpoints:
@@ -50,4 +50,6 @@ Note: this is not an ideal solution, the following are some considerations of a 
 * Better testing coverage
 * Project structure refactoring (different react state management)
 * More documentation
-* Pagination would need to be fully implemented
+* Pagination for catalog items would need to be fully implemented
+* CI/CD needs to be implemented for backend Lambda functions
+* Invoices should be static or 'time of purchase' (cart items currently link to the catalog directly)

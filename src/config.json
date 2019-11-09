@@ -1,6 +1,5 @@
 {
     "api": {
-        "items": "",
-        "invoices": ""
+        "base": "https://aypzd9oxyi.execute-api.us-west-2.amazonaws.com/tasc"
     }
 }

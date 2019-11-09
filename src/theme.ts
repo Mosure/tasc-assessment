@@ -41,7 +41,6 @@ export const theme = responsiveFontSizes(createMuiTheme({
         },
         h2: {
             fontWeight: 500,
-            fontSize: '1.5rem',
         },
         h3: {
             fontWeight: 500,

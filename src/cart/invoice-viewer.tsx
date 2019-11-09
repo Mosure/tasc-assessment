@@ -14,7 +14,7 @@ export const InvoiceViewer: React.FC = () => {
     const cartService = useContext(CartServiceContext);
     const { id } = useParams();
 
-    const emptyCart: CartModel = { items: [] };
+    const emptyCart: CartModel = { items: [], alias: '' };
 
     const [cartState, setCartState] = useState({
         cart: emptyCart,
@@ -22,19 +22,21 @@ export const InvoiceViewer: React.FC = () => {
     });
 
     useEffect(() => {
-        const subscription = cartService.getCart(id)
-        .subscribe((cart) => {
-            if (cart) {
-                setCartState({
-                    cart,
-                    cartInfo: cartService.getCartInfo(cart),
-                });
-            }
-        });
+        if (id) {
+            const subscription = cartService.getCart(id)
+            .subscribe((cart) => {
+                if (cart) {
+                    setCartState({
+                        cart,
+                        cartInfo: cartService.getCartInfo(cart),
+                    });
+                }
+            });
 
-        return () => {
-            subscription.unsubscribe();
-        };
+            return () => {
+                subscription.unsubscribe();
+            };
+        }
     }, [id, cartService]);
 
     return (

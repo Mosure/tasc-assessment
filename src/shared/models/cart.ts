@@ -1,6 +1,8 @@
 import { CartItem } from './cart-item';
 
 export interface Cart {
-    id?: string;
+    id?: number;
+    alias: string;
+    timestamp?: Date;
     items: CartItem[];
 }

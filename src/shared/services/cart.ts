@@ -1,7 +1,11 @@
 import React from 'react';
-import { Observable, of, Subject, merge } from 'rxjs';
+import { Observable, of, Subject, merge, from } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import rp, { RequestPromiseOptions } from 'request-promise';
+import uuidv1 from 'uuid/v1';
 
 import { Cart, CartInfo, CartItem } from '../models';
+import config from '../../config.json';
 
 /**
  * Manages cart state and invoice calculations
@@ -13,7 +17,7 @@ export interface ICartService {
     saveCart: () => void;
     purchaseCart: () => Observable<string>;
 
-    getCart: (id?: string) => Observable<Cart>;
+    getCart: (id: string) => Observable<Cart>;
     getLocalCart: (cart: Cart) => Cart;
     getCartInfo: (cart: Cart) => CartInfo;
 
@@ -37,6 +41,7 @@ export class CartService implements ICartService {
 
     protected _cart: Cart = {
         items: [],
+        alias: uuidv1(),
     };
 
     private _onUpdateSubject = new Subject<Cart>();
@@ -68,27 +73,31 @@ export class CartService implements ICartService {
     }
 
     public purchaseCart = (): Observable<string> => {
-        // Submit the cart to the server (returning the created cart id)
-        // Clear the local cart
-
         const cart = this.getLocalCart();
 
+        const options: RequestPromiseOptions = {
+            baseUrl: config.api.base,
+            json: true,
+            body: cart,
+        };
 
-        
-        cart.items = [];
-
-        this.saveCart();
-
-        return of('cartId');
+        return from(rp.post('/invoices', options))
+        .pipe(
+            tap(() => {
+                cart.items = [];
+                this.saveCart();
+            }),
+            map((result) => result.id),
+        );
     }
 
-    public getCart = (id?: string): Observable<Cart> => {
-        // This denotes a remote call instead of the local cart
-        if (id) {
-            // Get cart from remote
-        }
+    public getCart = (id: string): Observable<Cart> => {
+        const options: RequestPromiseOptions = {
+            baseUrl: config.api.base,
+            json: true,
+        };
 
-        return of(this._cart);
+        return from(rp.get('/invoices/' + id, options));
     }
 
     public getCartInfo = (cart: Cart): CartInfo => {

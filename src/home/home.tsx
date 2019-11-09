@@ -4,6 +4,7 @@ import {
     makeStyles,
     Grid,
     Container,
+    Typography,
 } from '@material-ui/core';
 
 import {
@@ -19,7 +20,12 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         container: {
             height: '100vh',
-            paddingTop: '48px',
+            paddingTop: '36px',
+        },
+        itemContainer: {
+            padding: '36px',
+        },
+        title: {
         },
     }),
 );
@@ -50,10 +56,14 @@ export const Home: React.FC = () => {
             <Header/>
 
             <Container maxWidth='lg' className={classes.container}>
+                <Typography variant='h2' className={classes.title}>
+                    Catalog
+                </Typography>
+
                 <Grid
                     container
                     justify='center'
-
+                    className={classes.itemContainer}
                 >
                     <Grid item>
                         <Grid

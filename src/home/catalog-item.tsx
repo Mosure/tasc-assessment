@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) =>
         },
         name: {
             color: theme.palette.text.primary,
+            fontSize: '1.5rem',
         },
         price: {
             color: theme.palette.text.hint,

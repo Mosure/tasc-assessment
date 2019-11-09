@@ -41,7 +41,7 @@ export const Cart: React.FC = () => {
     const cartService = useContext(CartServiceContext);
     const history = useHistory();
 
-    const emptyCart: CartModel = { items: [] };
+    const emptyCart: CartModel = { items: [], alias: '' };
 
     const [cartState, setCartState] = useState({
         cart: emptyCart,
