@@ -53,3 +53,4 @@ Note: this is not an ideal solution, the following are some considerations of a 
 * Pagination for catalog items would need to be fully implemented
 * CI/CD needs to be implemented for backend Lambda functions
 * Invoices should be static or 'time of purchase' (cart items currently link to the catalog directly)
+* Loading/Progress bars need to be added
